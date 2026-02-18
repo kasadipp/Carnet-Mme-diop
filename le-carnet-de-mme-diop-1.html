@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Le Carnet de Mme Diop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --parchment: #f5efe0;
+  --ink: #1a1208;
+  --terracotta: #c0522a;
+  --gold: #c9963b;
+  --olive: #4a6741;
+  --sky: #2e6a8e;
+  --cream: #faf6ed;
+  --red-soft: #8b2e1a;
+  --shadow: rgba(26,18,8,0.13);
+  --college-a: #2e6a8e;
+  --college-b: #4a6741;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--parchment);
+  color: var(--ink);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 10% 20%, rgba(192,82,42,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 80%, rgba(46,106,142,0.07) 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231a1208' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ══ SPLASH / LOGIN ══ */
+#splash {
+  position: fixed; inset: 0;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 9999;
+  gap: 1.5rem;
+  animation: splashIn .4s ease;
+}
+@keyframes splashIn { from{opacity:0} to{opacity:1} }
+.splash-logo {
+  width: 110px; height: 110px;
+}
+.splash-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--cream);
+  text-align: center;
+  line-height: 1.2;
+}
+.splash-title span { color: var(--gold); }
+.splash-sub { color: #aaa; font-size: 0.85rem; letter-spacing: 0.08em; }
+.splash-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%; max-width: 380px;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.splash-card label {
+  color: #ccc; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+  display: block; margin-bottom: .3rem;
+}
+.splash-card select, .splash-card input {
+  width: 100%; padding: .7rem 1rem;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: white; font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; outline: none;
+  transition: border .2s;
+}
+.splash-card select:focus, .splash-card input:focus {
+  border-color: var(--gold);
+}
+.splash-card select option { background: #222; }
+.btn-enter {
+  background: var(--gold); color: var(--ink);
+  border: none; border-radius: 10px;
+  padding: .85rem; font-weight: 700;
+  font-size: 1rem; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background .2s, transform .15s;
+  margin-top: .3rem;
+}
+.btn-enter:hover { background: #b5852a; transform: translateY(-1px); }
+
+/* ══ HEADER ══ */
+header {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 0 1.5rem;
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap;
+  gap: .8rem; position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 3px 18px var(--shadow);
+  min-height: 68px;
+}
+.header-left { display: flex; align-items: center; gap: .9rem; }
+.header-logo { width: 42px; height: 42px; }
+.header-titles { line-height: 1.2; }
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 900;
+}
+.header-title span { color: var(--gold); }
+.header-sub { font-size: 0.72rem; color: #aaa; font-weight: 300; letter-spacing: 0.05em; }
+.header-right { display: flex; align-items: center; gap: .8rem; }
+
+/* college badge */
+.college-badge {
+  padding: .3rem .9rem; border-radius: 99px;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: .03em;
+  cursor: pointer; border: 2px solid transparent; transition: all .2s;
+}
+.badge-a { background: var(--college-a); color: white; }
+.badge-b { background: var(--college-b); color: white; }
+.badge-inactive { background: transparent; color: #888; border-color: #444; }
+
+.lang-toggle { display: flex; gap: .4rem; }
+.lang-btn {
+  background: transparent; border: 1.5px solid rgba(255,255,255,0.2);
+  color: #ccc; padding: .28rem .7rem; border-radius: 99px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: .78rem; font-weight: 500; transition: all .2s;
+}
+.lang-btn.active { background: var(--gold); border-color: var(--gold); color: var(--ink); font-weight: 700; }
+
+/* ══ NAV ══ */
+nav {
+  display: flex; background: var(--cream);
+  border-bottom: 2px solid rgba(26,18,8,0.1);
+  overflow-x: auto; scrollbar-width: none;
+}
+nav::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex: 0 0 auto; background: transparent; border: none;
+  padding: .9rem 1.2rem; font-family: 'DM Sans', sans-serif;
+  font-size: .82rem; font-weight: 500; color: #888;
+  cursor: pointer; border-bottom: 3px solid transparent;
+  margin-bottom: -2px; transition: all .2s; white-space: nowrap;
+  display: flex; align-items: center; gap: .4rem;
+}
+.tab-btn:hover { color: var(--terracotta); }
+.tab-btn.active { color: var(--terracotta); border-bottom-color: var(--terracotta); font-weight: 700; }
+
+/* ══ MAIN ══ */
+main { max-width: 980px; margin: 0 auto; padding: 1.8rem 1.2rem 4rem; }
+
+.section { display: none; animation: fadeUp .3s ease; }
+.section.active { display: block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+.section-header {
+  display: flex; align-items: center; gap: .8rem;
+  margin-bottom: 1.6rem; border-bottom: 2px solid var(--gold);
+  padding-bottom: .8rem;
+}
+.section-header h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; }
+.section-icon { font-size: 1.4rem; }
+
+/* ══ COLLEGE FILTER BAR ══ */
+.filter-bar {
+  display: flex; gap: .6rem; flex-wrap: wrap;
+  margin-bottom: 1.4rem; align-items: center;
+}
+.filter-bar span { font-size: .8rem; color: #888; font-weight: 600; letter-spacing: .04em; }
+.filter-chip {
+  padding: .3rem .9rem; border-radius: 99px; font-size: .8rem;
+  font-weight: 600; cursor: pointer; border: 2px solid transparent;
+  transition: all .2s; font-family: 'DM Sans', sans-serif;
+}
+.chip-a { background: #daeaf5; color: var(--college-a); border-color: #b0d0e8; }
+.chip-a.active, .chip-a:hover { background: var(--college-a); color: white; }
+.chip-b { background: #e2f0db; color: var(--olive); border-color: #b8d9a8; }
+.chip-b.active, .chip-b:hover { background: var(--olive); color: white; }
+.chip-all { background: #eee8d8; color: #7a6a50; border-color: #d8c89c; }
+.chip-all.active, .chip-all:hover { background: var(--ink); color: var(--gold); }
+
+/* ══ CARDS ══ */
+.card {
+  background: var(--cream); border-radius: 12px;
+  padding: 1.3rem 1.5rem; margin-bottom: 1.1rem;
+  box-shadow: 0 2px 12px var(--shadow);
+  border-left: 4px solid var(--gold);
+  transition: box-shadow .2s, transform .2s;
+  position: relative;
+}
+.card:hover { box-shadow: 0 6px 24px var(--shadow); transform: translateY(-2px); }
+.card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+.card p, .card li { font-size: .88rem; line-height: 1.7; color: #4a3f30; }
+.card.terracotta { border-left-color: var(--terracotta); }
+.card.sky { border-left-color: var(--sky); }
+.card.olive { border-left-color: var(--olive); }
+
+.card-meta {
+  display: flex; gap: .5rem; align-items: center;
+  flex-wrap: wrap; margin-bottom: .5rem;
+}
+
+/* college tag on cards */
+.ctag {
+  display: inline-block; padding: .15rem .6rem; border-radius: 99px;
+  font-size: .7rem; font-weight: 700; letter-spacing: .03em;
+}
+.ctag-a { background: #daeaf5; color: var(--college-a); }
+.ctag-b { background: #e2f0db; color: var(--olive); }
+.ctag-all { background: #eee8d8; color: #7a6a50; }
+
+.badge {
+  display: inline-block; padding: .15rem .6rem; border-radius: 99px;
+  font-size: .72rem; font-weight: 600;
+}
+.badge-gold { background: #fef3d0; color: #8a6200; }
+.badge-red  { background: #fde8e0; color: #8b2e1a; }
+.badge-blue { background: #daeaf5; color: #1a4e6b; }
+.badge-green{ background: #e2f0db; color: #2e5c1a; }
+
+/* ══ SCHEDULE ══ */
+.schedule-grid {
+  display: grid; grid-template-columns: auto repeat(5,1fr);
+  gap: 2px; background: rgba(26,18,8,0.08);
+  border-radius: 10px; overflow: hidden; font-size: .78rem;
+  margin-bottom: 1.5rem;
+}
+.sg-cell { background: var(--cream); padding: .55rem .4rem; text-align: center; }
+.sg-cell.header { background: var(--ink); color: var(--gold); font-weight: 700; font-size: .72rem; letter-spacing: .05em; }
+.sg-cell.time { background: #eee8d8; font-weight: 600; font-size: .7rem; color: #7a6a50; }
+.sg-cell.lesson-a { background: linear-gradient(135deg,#daeaf5,#c8dff0); color: #1a3a5c; font-weight: 600; border-radius: 4px; }
+.sg-cell.lesson-b { background: linear-gradient(135deg,#e2f0db,#cce4c0); color: #2e4a1a; font-weight: 600; border-radius: 4px; }
+.sg-cell.empty { background: #f5efe0; }
+
+/* ══ GRADES ══ */
+.grades-table { width: 100%; border-collapse: collapse; font-size: .86rem; background: var(--cream); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px var(--shadow); }
+.grades-table th { background: var(--ink); color: var(--gold); padding: .7rem 1rem; text-align: left; font-weight: 600; font-size: .78rem; letter-spacing: .05em; }
+.grades-table td { padding: .65rem 1rem; border-bottom: 1px solid rgba(26,18,8,.07); color: #3a2e1a; }
+.grades-table tr:last-child td { border-bottom: none; }
+.grades-table tr:hover td { background: #f0e8d5; }
+.grade-pill { display: inline-block; padding: .18rem .65rem; border-radius: 99px; font-weight: 700; font-size: .82rem; }
+.grade-high { background: #e2f0db; color: #2e5c1a; }
+.grade-mid  { background: #fef3d0; color: #8a6200; }
+.grade-low  { background: #fde8e0; color: #8b2e1a; }
+.del-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: .95rem; transition: color .2s; }
+.del-btn:hover { color: var(--terracotta); }
+
+/* ══ LEXIQUE ══ */
+.lexicon-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(250px,1fr)); gap: 1rem; }
+.lex-card { background: var(--cream); border-radius: 10px; padding: 1.1rem 1.3rem; box-shadow: 0 2px 10px var(--shadow); border-top: 3px solid var(--sky); transition: transform .2s; }
+.lex-card:hover { transform: translateY(-3px); }
+.lex-word { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--sky); margin-bottom: .35rem; }
+.lex-def { font-size: .83rem; line-height: 1.6; color: #4a3f30; }
+
+/* ══ MESSAGES PARENTS ══ */
+.msg-card { background: var(--cream); border-radius: 10px; padding: 1.1rem 1.4rem; margin-bottom: 1rem; box-shadow: 0 2px 10px var(--shadow); display: flex; gap: 1rem; align-items: flex-start; }
+.msg-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--ink); color: var(--gold); font-family: 'Playfair Display', serif; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: .95rem; flex-shrink: 0; }
+.msg-content .msg-name { font-weight: 700; font-size: .85rem; }
+.msg-content .msg-date { font-size: .72rem; color: #999; margin-left: .5rem; }
+.msg-content .msg-text { font-size: .85rem; color: #4a3f30; margin-top: .3rem; line-height: 1.6; }
+.unread-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--terracotta); flex-shrink: 0; margin-top: 8px; }
+
+/* ══ FORMS ══ */
+.add-panel { background: var(--cream); border: 1.5px dashed var(--gold); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 1.4rem; }
+.add-panel h3 { font-family: 'Playfair Display', serif; font-size: .95rem; margin-bottom: 1rem; color: var(--terracotta); }
+.form-group { margin-bottom: .9rem; }
+.form-group label { display: block; font-size: .78rem; font-weight: 600; margin-bottom: .35rem; color: #6a5a3a; letter-spacing: .04em; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: .6rem .95rem; border: 1.5px solid rgba(26,18,8,.18); border-radius: 8px; background: white; font-family: 'DM Sans', sans-serif; font-size: .88rem; color: var(--ink); transition: border .2s; outline: none; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,150,59,.15); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.btn { background: var(--terracotta); color: white; border: none; padding: .65rem 1.6rem; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .88rem; cursor: pointer; transition: background .2s, transform .15s; }
+.btn:hover { background: var(--red-soft); transform: translateY(-1px); }
+.btn-gold { background: var(--gold); color: var(--ink); }
+.btn-gold:hover { background: #b5852a; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+@media(max-width:600px) { .grid2,.grid3 { grid-template-columns: 1fr; } .schedule-grid { font-size: .65rem; } }
+
+.notice { background: #fef3d0; border: 1.5px solid var(--gold); border-radius: 10px; padding: .9rem 1.2rem; font-size: .85rem; line-height: 1.6; margin-bottom: 1.4rem; color: #5a4200; }
+
+.dyn-list { list-style: none; }
+.dyn-list li { background: var(--cream); border-radius: 8px; padding: .7rem 1rem; margin-bottom: .5rem; box-shadow: 0 1px 6px var(--shadow); display: flex; align-items: center; justify-content: space-between; font-size: .85rem; gap: .5rem; }
+
+/* ══ LOGO SVG inline ══ */
+.logo-svg circle { transition: fill .3s; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ SPLASH LOGIN ══════════ -->
+<div id="splash">
+  <!-- Globe SVG Logo -->
+  <svg class="splash-logo" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="55" cy="55" r="50" fill="#c9963b" opacity=".15"/>
+    <circle cx="55" cy="55" r="44" fill="none" stroke="#c9963b" stroke-width="2.5"/>
+    <!-- meridians -->
+    <ellipse cx="55" cy="55" rx="18" ry="44" fill="none" stroke="#c9963b" stroke-width="1.5" opacity=".7"/>
+    <ellipse cx="55" cy="55" rx="33" ry="44" fill="none" stroke="#c9963b" stroke-width="1" opacity=".4"/>
+    <!-- parallels -->
+    <line x1="11" y1="55" x2="99" y2="55" stroke="#c9963b" stroke-width="1.5" opacity=".7"/>
+    <line x1="14" y1="35" x2="96" y2="35" stroke="#c9963b" stroke-width="1" opacity=".4"/>
+    <line x1="14" y1="75" x2="96" y2="75" stroke="#c9963b" stroke-width="1" opacity=".4"/>
+    <!-- continents suggestion -->
+    <path d="M38 42 Q45 38 52 44 Q56 48 54 55 Q50 60 44 58 Q36 54 38 42Z" fill="#c9963b" opacity=".5"/>
+    <path d="M60 38 Q68 35 72 42 Q75 48 70 52 Q64 54 60 48 Q58 43 60 38Z" fill="#c9963b" opacity=".4"/>
+    <path d="M42 62 Q48 60 50 67 Q50 73 45 74 Q39 73 40 66Z" fill="#c9963b" opacity=".35"/>
+    <!-- SD initials centre -->
+    <text x="55" y="60" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="900" fill="#c9963b">SD</text>
+  </svg>
+
+  <div class="splash-title">Le Carnet de<br/><span>Mme Diop</span></div>
+  <div class="splash-sub">HISTOIRE • GÉOGRAPHIE • COLLÈGE</div>
+
+  <div class="splash-card">
+    <div>
+      <label>🏫 MON COLLÈGE</label>
+      <select id="login-college">
+        <option value="">-- Choisir --</option>
+        <option value="A">Collège A</option>
+        <option value="B">Collège B</option>
+        <option value="teacher">👩‍🏫 Je suis Mme Diop (Enseignante)</option>
+      </select>
+    </div>
+    <div>
+      <label>👤 MA CLASSE</label>
+      <select id="login-class">
+        <option value="">-- Choisir --</option>
+        <option value="6A">6ème A</option>
+        <option value="6B">6ème B</option>
+        <option value="5A">5ème A</option>
+        <option value="5B">5ème B</option>
+        <option value="4A">4ème A</option>
+        <option value="3A">3ème A</option>
+        <option value="parent">👨‍👩‍👧 Je suis parent</option>
+      </select>
+    </div>
+    <div>
+      <label>🔑 MON NOM (Élève/Parent)</label>
+      <input type="text" id="login-name" placeholder="Ex : Sophie Martin"/>
+    </div>
+    <button class="btn-enter" onclick="doLogin()">✅ Entrer dans mon carnet</button>
+    <div id="login-error" style="color:#e57; font-size:.8rem; text-align:center; display:none;">Veuillez sélectionner votre collège et classe.</div>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app" style="display:none;">
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <svg class="header-logo" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="55" cy="55" r="50" fill="#c9963b" opacity=".1"/>
+      <circle cx="55" cy="55" r="44" fill="none" stroke="#c9963b" stroke-width="2.5"/>
+      <ellipse cx="55" cy="55" rx="18" ry="44" fill="none" stroke="#c9963b" stroke-width="1.5" opacity=".7"/>
+      <line x1="11" y1="55" x2="99" y2="55" stroke="#c9963b" stroke-width="1.5" opacity=".7"/>
+      <line x1="14" y1="35" x2="96" y2="35" stroke="#c9963b" stroke-width="1" opacity=".4"/>
+      <line x1="14" y1="75" x2="96" y2="75" stroke="#c9963b" stroke-width="1" opacity=".4"/>
+      <path d="M38 42 Q45 38 52 44 Q56 48 54 55 Q50 60 44 58 Q36 54 38 42Z" fill="#c9963b" opacity=".5"/>
+      <path d="M60 38 Q68 35 72 42 Q75 48 70 52 Q64 54 60 48 Q58 43 60 38Z" fill="#c9963b" opacity=".4"/>
+      <text x="55" y="60" text-anchor="middle" font-family="Playfair Display, serif" font-size="14" font-weight="900" fill="#c9963b">SD</text>
+    </svg>
+    <div class="header-titles">
+      <div class="header-title">Le Carnet de <span>Mme Diop</span></div>
+      <div class="header-sub" id="header-context">Histoire-Géographie</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span id="college-badge-display" class="college-badge badge-a" style="display:none;"></span>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
+      <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+    </div>
+    <button onclick="logout()" style="background:none;border:1px solid #555;color:#aaa;padding:.28rem .7rem;border-radius:99px;cursor:pointer;font-size:.75rem;font-family:'DM Sans',sans-serif;">⬅ Quitter</button>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav>
+  <button class="tab-btn active" onclick="showTab('schedule')" id="tab-schedule">📅 <span class="t" data-fr="Emploi du temps" data-en="Schedule">Emploi du temps</span></button>
+  <button class="tab-btn" onclick="showTab('grades')" id="tab-grades">📊 <span class="t" data-fr="Notes" data-en="Grades">Notes</span></button>
+  <button class="tab-btn" onclick="showTab('lessons')" id="tab-lessons">📖 <span class="t" data-fr="Leçons & Exercices" data-en="Lessons & Exercises">Leçons & Exercices</span></button>
+  <button class="tab-btn" onclick="showTab('lexicon')" id="tab-lexicon">🔤 <span class="t" data-fr="Lexique" data-en="Glossary">Lexique</span></button>
+  <button class="tab-btn" onclick="showTab('parents')" id="tab-parents">👨‍👩‍👧 <span class="t" data-fr="Espace Parents" data-en="Parents">Espace Parents</span></button>
+</nav>
+
+<main>
+
+<!-- ═══ 1. EMPLOI DU TEMPS ═══ -->
+<section class="section active" id="section-schedule">
+  <div class="section-header">
+    <span class="section-icon">📅</span>
+    <h2><span class="t" data-fr="Emploi du temps" data-en="Class Schedule">Emploi du temps</span></h2>
+  </div>
+
+  <!-- Collège filter (teacher only) -->
+  <div class="filter-bar" id="sched-filter" style="display:none;">
+    <span class="t" data-fr="Afficher :" data-en="Show:">Afficher :</span>
+    <button class="filter-chip chip-all active" onclick="filterSchedule('all',this)"><span class="t" data-fr="Tous les collèges" data-en="All schools">Tous les collèges</span></button>
+    <button class="filter-chip chip-a" onclick="filterSchedule('A',this)">🏫 Collège A</button>
+    <button class="filter-chip chip-b" onclick="filterSchedule('B',this)">🏫 Collège B</button>
+  </div>
+
+  <div class="notice" id="sched-notice">
+    📢 <strong><span class="t" data-fr="Semaine du 17–21 Février 2025 :" data-en="Week of Feb 17–21, 2025:">Semaine du 17–21 Février 2025 :</span></strong>
+    <span class="t" data-fr="Contrôle de géographie vendredi — N'oubliez pas votre atlas !" data-en="Geography test Friday — Don't forget your atlas!">Contrôle de géographie vendredi — N'oubliez pas votre atlas !</span>
+  </div>
+
+  <div id="sched-coll-a" class="sched-block">
+    <h3 style="font-family:'Playfair Display',serif;margin-bottom:.8rem;color:var(--college-a);">🏫 Collège A</h3>
+    <div class="schedule-grid">
+      <div class="sg-cell header"><span class="t" data-fr="Horaire" data-en="Time">Horaire</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Lundi" data-en="Mon">Lundi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Mardi" data-en="Tue">Mardi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Mercredi" data-en="Wed">Mercredi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Jeudi" data-en="Thu">Jeudi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Vendredi" data-en="Fri">Vendredi</span></div>
+      <div class="sg-cell time">08–09h</div><div class="sg-cell empty">—</div><div class="sg-cell lesson-a">Hist-Géo<br/><small>Salle 12</small></div><div class="sg-cell empty">—</div><div class="sg-cell empty">—</div><div class="sg-cell empty">—</div>
+      <div class="sg-cell time">09–10h</div><div class="sg-cell lesson-a">Hist-Géo<br/><small>Salle 12</small></div><div class="sg-cell empty">—</div><div class="sg-cell empty">—</div><div class="sg-cell lesson-a">Hist-Géo<br/><small>Salle 12</small></div><div class="sg-cell empty">—</div>
+      <div class="sg-cell time">10–11h</div><div class="sg-cell empty">—</div><div class="sg-cell empty">—</div><div class="sg-cell lesson-a">Hist-Géo<br/><small>Salle 12</small></div><div class="sg-cell empty">—</div><div class="sg-cell lesson-a" style="background:linear-gradient(135deg,#fde8e0,#f8d5c8);color:#8b2e1a;">⚠️ Contrôle<br/><small>Salle 12</small></div>
+    </div>
+  </div>
+
+  <div id="sched-coll-b" class="sched-block" style="margin-top:1.5rem;">
+    <h3 style="font-family:'Playfair Display',serif;margin-bottom:.8rem;color:var(--olive);">🏫 Collège B</h3>
+    <div class="schedule-grid">
+      <div class="sg-cell header"><span class="t" data-fr="Horaire" data-en="Time">Horaire</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Lundi" data-en="Mon">Lundi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Mardi" data-en="Tue">Mardi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Mercredi" data-en="Wed">Mercredi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Jeudi" data-en="Thu">Jeudi</span></div>
+      <div class="sg-cell header"><span class="t" data-fr="Vendredi" data-en="Fri">Vendredi</span></div>
+      <div class="sg-cell time">08–09h</div><div class="sg-cell lesson-b">Hist-Géo<br/><small>Salle 7</small></div><div class="sg-cell empty">—</div><div class="sg-cell empty">—</div><div class="sg-cell lesson-b">Hist-Géo<br/><small>Salle 7</small></div><div class="sg-cell empty">—</div>
+      <div class="sg-cell time">11–12h</div><div class="sg-cell empty">—</div><div class="sg-cell lesson-b">Hist-Géo<br/><small>Salle 7</small></div><div class="sg-cell empty">—</div><div class="sg-cell empty">—</div><div class="sg-cell lesson-b">Hist-Géo<br/><small>Salle 7</small></div>
+    </div>
+  </div>
+
+  <!-- Annonces (teacher) -->
+  <div id="announce-form-wrap" style="display:none;margin-top:1.8rem;">
+    <div class="add-panel">
+      <h3>📢 <span class="t" data-fr="Publier une annonce" data-en="Post Announcement">Publier une annonce</span></h3>
+      <div class="grid2">
+        <div class="form-group">
+          <label><span class="t" data-fr="Destinataire" data-en="Recipient">Destinataire</span></label>
+          <select id="ann-college">
+            <option value="all"><span class="t" data-fr="Tous les collèges" data-en="All schools">Tous les collèges</span></option>
+            <option value="A">Collège A</option>
+            <option value="B">Collège B</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><span class="t" data-fr="Message" data-en="Message">Message</span></label>
+          <input type="text" id="ann-text" placeholder="Ex : Pas de cours lundi…"/>
+        </div>
+      </div>
+      <button class="btn btn-gold" onclick="addAnnouncement()"><span class="t" data-fr="Publier" data-en="Publish">Publier</span></button>
+    </div>
+  </div>
+  <ul class="dyn-list" id="announce-list"></ul>
+</section>
+
+<!-- ═══ 2. NOTES ═══ -->
+<section class="section" id="section-grades">
+  <div class="section-header">
+    <span class="section-icon">📊</span>
+    <h2><span class="t" data-fr="Notes & Évaluations" data-en="Grades & Assessments">Notes & Évaluations</span></h2>
+  </div>
+
+  <!-- Teacher add form -->
+  <div class="add-panel" id="grades-form" style="display:none;">
+    <h3>➕ <span class="t" data-fr="Ajouter une note" data-en="Add a grade">Ajouter une note</span></h3>
+    <div class="grid3">
+      <div class="form-group">
+        <label><span class="t" data-fr="Élève" data-en="Student">Élève</span></label>
+        <input type="text" id="g-student" placeholder="Nom Prénom"/>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Collège" data-en="School">Collège</span></label>
+        <select id="g-college"><option value="A">Collège A</option><option value="B">Collège B</option></select>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Classe" data-en="Class">Classe</span></label>
+        <input type="text" id="g-class" placeholder="Ex : 5ème A"/>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Évaluation" data-en="Assessment">Évaluation</span></label>
+        <input type="text" id="g-eval" placeholder="Ex : Contrôle Moyen-Âge"/>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Note (/20)" data-en="Grade (/20)">Note (/20)</span></label>
+        <input type="number" id="g-note" min="0" max="20" placeholder="15"/>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Date" data-en="Date">Date</span></label>
+        <input type="date" id="g-date"/>
+      </div>
+    </div>
+    <button class="btn" onclick="addGrade()"><span class="t" data-fr="Enregistrer" data-en="Save">Enregistrer</span></button>
+  </div>
+
+  <div class="filter-bar" id="grades-filter">
+    <span class="t" data-fr="Filtrer :" data-en="Filter:">Filtrer :</span>
+    <button class="filter-chip chip-all active" onclick="filterGrades('all',this)"><span class="t" data-fr="Tous" data-en="All">Tous</span></button>
+    <button class="filter-chip chip-a" onclick="filterGrades('A',this)">Collège A</button>
+    <button class="filter-chip chip-b" onclick="filterGrades('B',this)">Collège B</button>
+  </div>
+
+  <table class="grades-table">
+    <thead>
+      <tr>
+        <th><span class="t" data-fr="Élève" data-en="Student">Élève</span></th>
+        <th><span class="t" data-fr="Collège" data-en="School">Collège</span></th>
+        <th><span class="t" data-fr="Classe" data-en="Class">Classe</span></th>
+        <th><span class="t" data-fr="Évaluation" data-en="Assessment">Évaluation</span></th>
+        <th><span class="t" data-fr="Note" data-en="Grade">Note</span></th>
+        <th><span class="t" data-fr="Date" data-en="Date">Date</span></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="grades-body">
+      <tr data-college="A"><td>Martin Sophie</td><td><span class="ctag ctag-a">Coll. A</span></td><td>5ème A</td><td>Contrôle Moyen-Âge</td><td><span class="grade-pill grade-high">18/20</span></td><td>10/02/2025</td><td><button class="del-btn teacher-only" style="display:none;" onclick="this.closest('tr').remove()">✕</button></td></tr>
+      <tr data-college="A"><td>Dubois Lucas</td><td><span class="ctag ctag-a">Coll. A</span></td><td>5ème A</td><td>Contrôle Moyen-Âge</td><td><span class="grade-pill grade-mid">12/20</span></td><td>10/02/2025</td><td><button class="del-btn teacher-only" style="display:none;" onclick="this.closest('tr').remove()">✕</button></td></tr>
+      <tr data-college="B"><td>Ndiaye Aminata</td><td><span class="ctag ctag-b">Coll. B</span></td><td>6ème B</td><td>Contrôle Méditerranée</td><td><span class="grade-pill grade-high">16/20</span></td><td>12/02/2025</td><td><button class="del-btn teacher-only" style="display:none;" onclick="this.closest('tr').remove()">✕</button></td></tr>
+      <tr data-college="B"><td>Benali Yasmine</td><td><span class="ctag ctag-b">Coll. B</span></td><td>4ème A</td><td>Contrôle Méditerranée</td><td><span class="grade-pill grade-low">8/20</span></td><td>12/02/2025</td><td><button class="del-btn teacher-only" style="display:none;" onclick="this.closest('tr').remove()">✕</button></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══ 3. LEÇONS ═══ -->
+<section class="section" id="section-lessons">
+  <div class="section-header">
+    <span class="section-icon">📖</span>
+    <h2><span class="t" data-fr="Leçons & Exercices" data-en="Lessons & Exercises">Leçons & Exercices</span></h2>
+  </div>
+
+  <div class="add-panel" id="lessons-form" style="display:none;">
+    <h3>➕ <span class="t" data-fr="Ajouter" data-en="Add">Ajouter</span></h3>
+    <div class="grid3">
+      <div class="form-group">
+        <label><span class="t" data-fr="Titre" data-en="Title">Titre</span></label>
+        <input type="text" id="l-title" placeholder="Ex : La Révolution française"/>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Type" data-en="Type">Type</span></label>
+        <select id="l-type">
+          <option value="lecon">📘 Leçon à apprendre</option>
+          <option value="exercice">📝 Exercice à faire</option>
+          <option value="revision">🔁 Révision</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Collège" data-en="School">Collège</span></label>
+        <select id="l-college">
+          <option value="all"><span class="t" data-fr="Les deux collèges" data-en="Both schools">Les deux collèges</span></option>
+          <option value="A">Collège A</option>
+          <option value="B">Collège B</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label><span class="t" data-fr="Contenu / Consignes" data-en="Content / Instructions">Contenu / Consignes</span></label>
+      <textarea id="l-content" placeholder="Décrivez la leçon ou l'exercice…"></textarea>
+    </div>
+    <div class="form-group" style="max-width:220px;">
+      <label><span class="t" data-fr="Date limite" data-en="Due date">Date limite</span></label>
+      <input type="date" id="l-due"/>
+    </div>
+    <button class="btn" onclick="addLesson()"><span class="t" data-fr="Ajouter" data-en="Add">Ajouter</span></button>
+  </div>
+
+  <div class="filter-bar">
+    <span class="t" data-fr="Filtrer :" data-en="Filter:">Filtrer :</span>
+    <button class="filter-chip chip-all active" onclick="filterLessons('all',this)"><span class="t" data-fr="Tous" data-en="All">Tous</span></button>
+    <button class="filter-chip chip-a" onclick="filterLessons('A',this)">Collège A</button>
+    <button class="filter-chip chip-b" onclick="filterLessons('B',this)">Collège B</button>
+  </div>
+
+  <div id="lessons-list">
+    <div class="card sky" data-college="A">
+      <div class="card-meta">
+        <span class="ctag ctag-a">Coll. A</span>
+        <span class="badge badge-blue">📘 Leçon</span>
+      </div>
+      <h3>La Méditerranée, une mer au cœur des échanges</h3>
+      <p>Apprenez les paragraphes 1 à 3 (p. 44–47). Savoir situer les grandes mers et pays sur la carte.</p>
+      <small style="color:#999;margin-top:.5rem;display:block;">📅 <span class="t" data-fr="Pour le" data-en="Due">Pour le</span> : 21/02/2025</small>
+    </div>
+    <div class="card terracotta" data-college="B">
+      <div class="card-meta">
+        <span class="ctag ctag-b">Coll. B</span>
+        <span class="badge badge-red">📝 Exercice</span>
+      </div>
+      <h3>Carte de l'Empire romain</h3>
+      <p>Compléter la carte muette p. 51 — légender les provinces et les villes principales.</p>
+      <small style="color:#999;margin-top:.5rem;display:block;">📅 <span class="t" data-fr="Pour le" data-en="Due">Pour le</span> : 18/02/2025</small>
+    </div>
+    <div class="card olive" data-college="all">
+      <div class="card-meta">
+        <span class="ctag ctag-all">Tous collèges</span>
+        <span class="badge badge-green">🔁 Révision</span>
+      </div>
+      <h3>Révision : La Préhistoire</h3>
+      <p>Relire le chapitre 1, revoir les dates clés et les outils de l'Homme préhistorique.</p>
+      <small style="color:#999;margin-top:.5rem;display:block;">📅 <span class="t" data-fr="Pour le" data-en="Due">Pour le</span> : 24/02/2025</small>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4. LEXIQUE ═══ -->
+<section class="section" id="section-lexicon">
+  <div class="section-header">
+    <span class="section-icon">🔤</span>
+    <h2><span class="t" data-fr="Lexique des mots difficiles" data-en="Glossary of Difficult Words">Lexique des mots difficiles</span></h2>
+  </div>
+
+  <div class="add-panel" id="lexicon-form" style="display:none;">
+    <h3>➕ <span class="t" data-fr="Ajouter un mot" data-en="Add a word">Ajouter un mot</span></h3>
+    <div class="grid2">
+      <div class="form-group">
+        <label><span class="t" data-fr="Mot / Terme" data-en="Word / Term">Mot / Terme</span></label>
+        <input type="text" id="lex-word" placeholder="Ex : Mésopotamie"/>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Définition" data-en="Definition">Définition</span></label>
+        <input type="text" id="lex-def" placeholder="Ex : Région entre le Tigre et l'Euphrate…"/>
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="addLexEntry()"><span class="t" data-fr="Ajouter au lexique" data-en="Add to glossary">Ajouter au lexique</span></button>
+  </div>
+
+  <div class="lexicon-grid" id="lexicon-grid">
+    <div class="lex-card"><div class="lex-word">Mésopotamie</div><div class="lex-def">Région de l'Antiquité entre le Tigre et l'Euphrate, berceau de l'écriture cunéiforme.</div></div>
+    <div class="lex-card"><div class="lex-word">Féodalité</div><div class="lex-def">Système politique du Moyen-Âge basé sur les liens de vassalité entre seigneurs et vassaux.</div></div>
+    <div class="lex-card"><div class="lex-word">Latitude</div><div class="lex-def">Distance angulaire d'un point de la Terre par rapport à l'équateur (en degrés N ou S).</div></div>
+    <div class="lex-card"><div class="lex-word">Migration</div><div class="lex-def">Déplacement d'une population d'un lieu à un autre, souvent pour raisons économiques ou climatiques.</div></div>
+    <div class="lex-card"><div class="lex-word">Démocratie</div><div class="lex-def">Régime politique où le pouvoir appartient au peuple, né à Athènes au V<sup>e</sup> s. av. J.-C.</div></div>
+    <div class="lex-card"><div class="lex-word">Métropole</div><div class="lex-def">Grande ville exerçant un rayonnement économique, culturel et politique sur une région.</div></div>
+  </div>
+</section>
+
+<!-- ═══ 5. PARENTS ═══ -->
+<section class="section" id="section-parents">
+  <div class="section-header">
+    <span class="section-icon">👨‍👩‍👧</span>
+    <h2><span class="t" data-fr="Espace Parents" data-en="Parents Space">Espace Parents</span></h2>
+  </div>
+
+  <div class="notice">
+    📬 <span class="t" data-fr="Espace réservé aux communications de Mme Diop à destination des familles." data-en="Space reserved for Mme Diop's communications to families.">Espace réservé aux communications de Mme Diop à destination des familles.</span>
+  </div>
+
+  <div class="add-panel" id="parents-form" style="display:none;">
+    <h3>✉️ <span class="t" data-fr="Nouveau message aux parents" data-en="New message to parents">Nouveau message aux parents</span></h3>
+    <div class="grid2">
+      <div class="form-group">
+        <label><span class="t" data-fr="Destinataire" data-en="Recipient">Destinataire</span></label>
+        <select id="p-college">
+          <option value="all"><span class="t" data-fr="Tous les parents" data-en="All parents">Tous les parents</span></option>
+          <option value="A">Parents — Collège A</option>
+          <option value="B">Parents — Collège B</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label><span class="t" data-fr="Objet" data-en="Subject">Objet</span></label>
+        <input type="text" id="p-subject" placeholder="Ex : Sortie scolaire – autorisation"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label><span class="t" data-fr="Message" data-en="Message">Message</span></label>
+      <textarea id="p-msg" placeholder="Bonjour, je souhaite vous informer que…"></textarea>
+    </div>
+    <button class="btn" onclick="addParentMsg()"><span class="t" data-fr="Envoyer" data-en="Send">Envoyer</span></button>
+  </div>
+
+  <div id="parents-list">
+    <div class="msg-card" data-college="all">
+      <div class="unread-dot"></div>
+      <div class="msg-avatar">MD</div>
+      <div class="msg-content">
+        <span class="msg-name">Mme Diop</span>
+        <span class="msg-date">14/02/2025</span>
+        <span class="ctag ctag-all" style="margin-left:.5rem;font-size:.68rem;">Tous</span>
+        <div class="msg-text"><strong>Contrôle de géographie vendredi 21 février</strong><br/>
+        Bonjour, votre enfant doit réviser les chapitres 4 et 5 (La Méditerranée & L'Empire romain). Merci pour votre soutien.</div>
+      </div>
+    </div>
+    <div class="msg-card" data-college="A">
+      <div style="width:8px;"></div>
+      <div class="msg-avatar">MD</div>
+      <div class="msg-content">
+        <span class="msg-name">Mme Diop</span>
+        <span class="msg-date">07/02/2025</span>
+        <span class="ctag ctag-a" style="margin-left:.5rem;font-size:.68rem;">Coll. A</span>
+        <div class="msg-text"><strong>Sortie musée – autorisation (Collège A)</strong><br/>
+        Une sortie au Musée d'Histoire est prévue le 5 mars. Merci de retourner le coupon signé avant le 28 février.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div><!-- end #app -->
+
+<script>
+// ══ STATE ══
+let currentLang = 'fr';
+let userRole = ''; // 'teacher' | 'student' | 'parent'
+let userCollege = ''; // 'A' | 'B' | 'all'
+let userClass = '';
+let userName = '';
+
+// ══ LOGIN ══
+function doLogin() {
+  const college = document.getElementById('login-college').value;
+  const cls = document.getElementById('login-class').value;
+  const name = document.getElementById('login-name').value.trim();
+
+  if (!college) {
+    document.getElementById('login-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('login-error').style.display = 'none';
+
+  userCollege = college === 'teacher' ? 'all' : college;
+  userClass = cls;
+  userName = name || (college === 'teacher' ? 'Mme Diop' : 'Élève');
+
+  if (college === 'teacher') {
+    userRole = 'teacher';
+  } else if (cls === 'parent') {
+    userRole = 'parent';
+  } else {
+    userRole = 'student';
+  }
+
+  // Update header
+  const ctx = document.getElementById('header-context');
+  if (userRole === 'teacher') {
+    ctx.textContent = '👩‍🏫 Mme Diop — Collège A & B';
+  } else {
+    ctx.textContent = `${userName} • Collège ${college}${cls && cls !== 'parent' ? ' • ' + cls : ''}`;
+  }
+
+  // College badge
+  const badge = document.getElementById('college-badge-display');
+  if (userRole !== 'teacher') {
+    badge.style.display = 'inline-block';
+    badge.textContent = '🏫 Collège ' + college;
+    badge.className = 'college-badge ' + (college === 'A' ? 'badge-a' : 'badge-b');
+  }
+
+  // Show/hide teacher controls
+  const teacherEls = ['sched-filter','announce-form-wrap','grades-form','lessons-form','lexicon-form','parents-form'];
+  teacherEls.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = userRole === 'teacher' ? 'block' : 'none';
+  });
+  document.querySelectorAll('.teacher-only').forEach(el => {
+    el.style.display = userRole === 'teacher' ? 'inline-block' : 'none';
+  });
+
+  // If student/parent from college A or B, filter views
+  if (userRole !== 'teacher') {
+    filterScheduleAuto();
+    filterGrades(userCollege, null);
+    filterLessons(userCollege, null);
+    filterParentMsgs(userCollege);
+    document.getElementById('grades-filter').style.display = 'none';
+  }
+
+  // Splash out
+  const splash = document.getElementById('splash');
+  splash.style.opacity = '0';
+  splash.style.transition = 'opacity .4s';
+  setTimeout(() => { splash.style.display = 'none'; document.getElementById('app').style.display = 'block'; }, 400);
+}
+
+function filterScheduleAuto() {
+  const a = document.getElementById('sched-coll-a');
+  const b = document.getElementById('sched-coll-b');
+  if (userCollege === 'A') { b.style.display = 'none'; }
+  else if (userCollege === 'B') { a.style.display = 'none'; }
+}
+
+function logout() {
+  document.getElementById('app').style.display = 'none';
+  const splash = document.getElementById('splash');
+  splash.style.display = 'flex'; splash.style.opacity = '1';
+}
+
+// ══ LANGUAGE ══
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  document.querySelectorAll('.t').forEach(el => {
+    el.textContent = el.dataset[lang] || el.dataset.fr;
+  });
+}
+
+// ══ TABS ══
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// ══ FILTER HELPERS ══
+function setActiveChip(btn, siblings) {
+  if (!btn) return;
+  siblings.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function filterSchedule(college, btn) {
+  setActiveChip(btn, btn ? btn.parentElement.querySelectorAll('.filter-chip') : []);
+  document.getElementById('sched-coll-a').style.display = (college === 'all' || college === 'A') ? 'block' : 'none';
+  document.getElementById('sched-coll-b').style.display = (college === 'all' || college === 'B') ? 'block' : 'none';
+}
+
+function filterGrades(college, btn) {
+  if (btn) setActiveChip(btn, btn.parentElement.querySelectorAll('.filter-chip'));
+  document.querySelectorAll('#grades-body tr').forEach(tr => {
+    const c = tr.dataset.college;
+    tr.style.display = (college === 'all' || c === college) ? '' : 'none';
+  });
+}
+
+function filterLessons(college, btn) {
+  if (btn) setActiveChip(btn, btn.parentElement.querySelectorAll('.filter-chip'));
+  document.querySelectorAll('#lessons-list .card').forEach(card => {
+    const c = card.dataset.college;
+    card.style.display = (college === 'all' || c === college || c === 'all') ? 'block' : 'none';
+  });
+}
+
+function filterParentMsgs(college) {
+  document.querySelectorAll('#parents-list .msg-card').forEach(card => {
+    const c = card.dataset.college;
+    card.style.display = (college === 'all' || c === college || c === 'all') ? 'flex' : 'none';
+  });
+}
+
+// ══ ANNOUNCEMENTS ══
+function addAnnouncement() {
+  const val = document.getElementById('ann-text').value.trim();
+  const col = document.getElementById('ann-college').value;
+  if (!val) return;
+  const colLabel = col === 'all' ? '📢 Tous' : `📢 Coll. ${col}`;
+  const li = document.createElement('li');
+  li.innerHTML = `<span><span class="ctag ${col==='all'?'ctag-all':col==='A'?'ctag-a':'ctag-b'}" style="margin-right:.5rem;">${colLabel}</span>${val}</span><button class="del-btn" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('announce-list').prepend(li);
+  document.getElementById('ann-text').value = '';
+}
+
+// ══ GRADES ══
+function addGrade() {
+  const student = document.getElementById('g-student').value.trim();
+  const college = document.getElementById('g-college').value;
+  const cls = document.getElementById('g-class').value.trim();
+  const eval_ = document.getElementById('g-eval').value.trim();
+  const note = parseFloat(document.getElementById('g-note').value);
+  const date = document.getElementById('g-date').value;
+  if (!student || !eval_ || isNaN(note)) return;
+  const cls_ = note >= 14 ? 'grade-high' : note >= 10 ? 'grade-mid' : 'grade-low';
+  const fmt = date ? new Date(date).toLocaleDateString('fr-FR') : '—';
+  const tr = document.createElement('tr');
+  tr.dataset.college = college;
+  tr.innerHTML = `<td>${student}</td><td><span class="ctag ctag-${college.toLowerCase()}">Coll. ${college}</span></td><td>${cls}</td><td>${eval_}</td><td><span class="grade-pill ${cls_}">${note}/20</span></td><td>${fmt}</td><td><button class="del-btn" onclick="this.closest('tr').remove()">✕</button></td>`;
+  document.getElementById('grades-body').prepend(tr);
+  ['g-student','g-class','g-eval','g-note','g-date'].forEach(id => document.getElementById(id).value='');
+}
+
+// ══ LESSONS ══
+function addLesson() {
+  const title = document.getElementById('l-title').value.trim();
+  const type = document.getElementById('l-type').value;
+  const college = document.getElementById('l-college').value;
+  const content = document.getElementById('l-content').value.trim();
+  const due = document.getElementById('l-due').value;
+  if (!title) return;
+  const colors = { lecon:'sky', exercice:'terracotta', revision:'olive' };
+  const icons = { lecon:'📘', exercice:'📝', revision:'🔁' };
+  const badgeLabels = { lecon:'Leçon', exercice:'Exercice', revision:'Révision' };
+  const badgeCls = { lecon:'badge-blue', exercice:'badge-red', revision:'badge-green' };
+  const colTag = college === 'all' ? '<span class="ctag ctag-all">Tous collèges</span>' : `<span class="ctag ctag-${college.toLowerCase()}">Coll. ${college}</span>`;
+  const fmtDate = due ? new Date(due).toLocaleDateString('fr-FR') : '';
+  const div = document.createElement('div');
+  div.className = `card ${colors[type]}`;
+  div.dataset.college = college;
+  div.innerHTML = `<div class="card-meta">${colTag}<span class="badge ${badgeCls[type]}">${icons[type]} ${badgeLabels[type]}</span></div>
+  <h3>${title}</h3><p>${content}</p>
+  ${fmtDate ? `<small style="color:#999;margin-top:.5rem;display:block;">📅 Pour le : ${fmtDate}</small>` : ''}`;
+  document.getElementById('lessons-list').prepend(div);
+  ['l-title','l-content','l-due'].forEach(id => document.getElementById(id).value='');
+}
+
+// ══ LEXICON ══
+function addLexEntry() {
+  const word = document.getElementById('lex-word').value.trim();
+  const def = document.getElementById('lex-def').value.trim();
+  if (!word || !def) return;
+  const div = document.createElement('div');
+  div.className = 'lex-card';
+  div.innerHTML = `<div class="lex-word">${word}</div><div class="lex-def">${def}</div>`;
+  document.getElementById('lexicon-grid').prepend(div);
+  ['lex-word','lex-def'].forEach(id => document.getElementById(id).value='');
+}
+
+// ══ PARENTS ══
+function addParentMsg() {
+  const college = document.getElementById('p-college').value;
+  const subj = document.getElementById('p-subject').value.trim();
+  const msg = document.getElementById('p-msg').value.trim();
+  if (!subj || !msg) return;
+  const today = new Date().toLocaleDateString('fr-FR');
+  const colTag = college === 'all' ? '<span class="ctag ctag-all" style="margin-left:.5rem;font-size:.68rem;">Tous</span>' : `<span class="ctag ctag-${college.toLowerCase()}" style="margin-left:.5rem;font-size:.68rem;">Coll. ${college}</span>`;
+  const div = document.createElement('div');
+  div.className = 'msg-card'; div.dataset.college = college;
+  div.innerHTML = `<div class="unread-dot"></div>
+    <div class="msg-avatar">MD</div>
+    <div class="msg-content">
+      <span class="msg-name">Mme Diop</span>
+      <span class="msg-date">${today}</span>${colTag}
+      <div class="msg-text"><strong>${subj}</strong><br/>${msg}</div>
+    </div>`;
+  document.getElementById('parents-list').prepend(div);
+  ['p-subject','p-msg'].forEach(id => document.getElementById(id).value='');
+}
+</script>
+</body>
+</html>
